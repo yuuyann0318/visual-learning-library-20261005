@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#faf7f1">
+  <meta name="description" content="3つの教材を、図を中心に読み直すローカル学習ライブラリ。">
+  <title>教材を深く理解する図解ライブラリ</title>
+  <style>
+    :root { --paper:#faf7f1; --ink:#202624; --muted:#65706b; --line:#ddd7ce; --coral:#e96b5b; --violet:#735b9d; --teal:#2f7f76; }
+    * { box-sizing:border-box; }
+    html { background:var(--paper); }
+    body { margin:0; color:var(--ink); background:radial-gradient(circle at 8% 0,rgba(233,107,91,.12),transparent 25rem),radial-gradient(circle at 100% 25%,rgba(47,127,118,.1),transparent 28rem),var(--paper); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif; line-height:1.7; }
+    a { color:inherit; }
+    :focus-visible { outline:3px solid var(--teal); outline-offset:4px; }
+    header { width:min(calc(100% - 32px),1200px); margin:0 auto; padding:76px 0 44px; }
+    .eyebrow { margin:0 0 12px; color:#9f3d35; font-size:.78rem; font-weight:850; letter-spacing:.16em; }
+    h1 { max-width:11ch; margin:0; font-size:clamp(2.7rem,7vw,6.5rem); line-height:1.05; letter-spacing:-.055em; }
+    header p:last-child { max-width:43rem; margin:26px 0 0; color:var(--muted); font-size:1.05rem; }
+    main { width:min(calc(100% - 32px),1200px); margin:0 auto; padding:10px 0 90px; }
+    .shelf { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+    .book { min-height:590px; display:grid; grid-template-rows:260px 1fr; overflow:hidden; border:1px solid var(--line); background:rgba(255,255,255,.84); border-radius:28px; box-shadow:0 18px 58px rgba(51,46,39,.09); text-decoration:none; }
+    .visual { position:relative; overflow:hidden; display:grid; place-items:center; }
+    .book:nth-child(1) .visual { background:#f5c8bf; }
+    .book:nth-child(2) .visual { background:#ddd3ee; }
+    .book:nth-child(3) .visual { background:#cce7e1; }
+    .book-body { padding:28px; display:flex; flex-direction:column; }
+    .book-no { color:var(--muted); font-size:.72rem; font-weight:850; letter-spacing:.12em; }
+    h2 { margin:8px 0 12px; font-size:clamp(1.35rem,2.5vw,2rem); line-height:1.25; letter-spacing:-.025em; }
+    .book-body p { margin:0; color:var(--muted); font-size:.9rem; }
+    .learn { margin:22px 0 0; padding:0; list-style:none; }
+    .learn li { padding:7px 0; border-top:1px solid var(--line); font-size:.78rem; font-weight:750; }
+    .open { margin-top:auto; padding-top:24px; color:#9f3d35; font-weight:900; }
+    .book:hover .open { text-decoration:underline; }
+    .orbit { position:relative; width:190px; height:190px; border:2px solid rgba(32,38,36,.22); border-radius:50%; }
+    .orbit::before,.orbit::after { content:""; position:absolute; border-radius:50%; background:white; box-shadow:0 5px 16px rgba(0,0,0,.12); }
+    .orbit::before { width:72px; height:72px; left:57px; top:57px; }
+    .orbit::after { width:24px; height:24px; left:8px; top:70px; box-shadow:74px -69px white,143px 10px white,103px 87px white,7px 78px white; }
+    .orbit span { position:absolute; inset:0; display:grid; place-items:center; z-index:2; font-size:1.45rem; font-weight:950; }
+    .funnel { width:210px; display:grid; gap:7px; place-items:center; }
+    .funnel i { display:block; height:35px; background:rgba(255,255,255,.78); clip-path:polygon(5% 0,95% 0,85% 100%,15% 100%); }
+    .funnel i:nth-child(1){width:100%}.funnel i:nth-child(2){width:78%}.funnel i:nth-child(3){width:56%}.funnel i:nth-child(4){width:34%}
+    .steps { width:210px; height:190px; position:relative; }
+    .steps i { position:absolute; width:56px; height:56px; display:grid; place-items:center; color:white; background:#bf5548; border-radius:50%; font-style:normal; font-weight:900; box-shadow:0 0 0 8px rgba(255,255,255,.42); }
+    .steps i:nth-child(1){left:0;bottom:3px}.steps i:nth-child(2){left:52px;bottom:45px}.steps i:nth-child(3){left:104px;bottom:88px}.steps i:nth-child(4){left:154px;bottom:130px}
+    .steps::before { content:""; position:absolute; left:26px; right:22px; bottom:28px; height:3px; background:#bf5548; transform:rotate(-40deg); transform-origin:left; }
+    footer { width:min(calc(100% - 32px),1200px); margin:0 auto; padding:28px 0 48px; color:var(--muted); font-size:.74rem; border-top:1px solid var(--line); }
+    @media(max-width:850px){.shelf{grid-template-columns:1fr}.book{min-height:0;grid-template-columns:minmax(220px,.7fr) 1fr;grid-template-rows:1fr}.visual{min-height:360px}}
+    @media(max-width:560px){header{padding-top:48px}.book{grid-template-columns:1fr;grid-template-rows:230px 1fr}.visual{min-height:0}h1{font-size:clamp(2.45rem,14vw,4rem)}}
+    @media print{body{background:#fff}.shelf{grid-template-columns:1fr 1fr 1fr}.book{box-shadow:none;break-inside:avoid}footer{display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <p class="eyebrow">VISUAL LEARNING LIBRARY · 2026</p>
+    <h1>教材を、図から理解する。</h1>
+    <p>長い教材を短く削るのではなく、関係・順番・判断の形へ置き換えました。気になる一冊から開き、全体像と細部を行き来できます。</p>
+  </header>
+  <main>
+    <div class="shelf">
+      <a class="book" href="hotel/index.html">
+        <div class="visual" aria-hidden="true"><div class="steps"><i>1</i><i>4</i><i>8</i><i>16</i></div></div>
+        <div class="book-body"><span class="book-no">BOOK 01 · SNS企画</span><h2>無名から知られるまでの16手法</h2><p>物語、短い動画、参加設計、媒体展開。150ページの原資料を4つの問いで読み直します。</p><ul class="learn"><li>過程をフォロー理由に変える</li><li>驚きから納得までを設計する</li><li>媒体と文化に合わせて作り直す</li></ul><span class="open">この教材を開く →</span></div>
+      </a>
+      <a class="book" href="instagram/index.html">
+        <div class="visual" aria-hidden="true"><div class="funnel"><i></i><i></i><i></i><i></i></div></div>
+        <div class="book-body"><span class="book-no">BOOK 02 · Instagram運用</span><h2>Instagram運用の教科書</h2><p>アカウント設計から投稿、分析、収益化までを、実務の流れと判断基準でたどります。</p><ul class="learn"><li>誰へ何を届けるかを決める</li><li>投稿を改善する数字を見る</li><li>発信から事業への導線を作る</li></ul><span class="open">この教材を開く →</span></div>
+      </a>
+      <a class="book" href="ai-secretary/index.html">
+        <div class="visual" aria-hidden="true"><div class="orbit"><span>AI秘書</span></div></div>
+        <div class="book-body"><span class="book-no">BOOK 03 · ひとり運営</span><h2>わたし専属AI秘書のつくり方</h2><p>日々の依頼、記録、安全、スキル追加を、ひとり運営を支える仕組みとして理解します。</p><ul class="learn"><li>任せる仕事と確認点を分ける</li><li>記憶と手順を残す</li><li>安全な範囲で役割を広げる</li></ul><span class="open">この教材を開く →</span></div>
+      </a>
+    </div>
+  </main>
+  <footer>作成日：2026年10月5日 JST · ローカル閲覧用 · 原資料は変更していません</footer>
+</body>
+</html>
